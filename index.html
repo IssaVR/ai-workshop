@@ -25,17 +25,17 @@
   --text:#E9EEFF; --muted:#A5B2D9; --fill:#8FB2FF; --ph-bg:#3A3310; --ph-text:#F4DE7A; --blue-ink:#DCE5FF;
 }
 *,*::before,*::after{box-sizing:inherit}
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px);scroll-behavior:smooth}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--nav-h,76px) + 12px);scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",Arial,sans-serif;font-size:16px;line-height:1.75;-webkit-text-size-adjust:100%}
 h1,h2,h3,h4{font-family:"Readex Pro","IBM Plex Sans Arabic",Tahoma,Arial,sans-serif;line-height:1.3;margin:0}
 .wrap{max-width:720px;margin:0 auto;padding:0 18px}
+@media (min-width:960px){.wrap{max-width:1040px;padding:0 28px}.roster .row{max-width:1040px!important}}
 button{font:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--lime);outline-offset:2px}
 
 /* hero */
 .hero{background:var(--blue);color:#fff;padding:36px 0 30px;position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;inset:auto -10% -60px -10%;height:120px;border-radius:50%;border-top:18px solid var(--lime);opacity:.9;transform:rotate(-3deg)}
 .hero .who{font-size:15px;opacity:.85;margin:0 0 6px}
 .hero h1{font-size:clamp(28px,7vw,40px);font-weight:700}
 .hero .sub{margin:10px 0 0;font-size:17px;max-width:32em;opacity:.95}
@@ -47,6 +47,7 @@ button{font:inherit;cursor:pointer}
 .roster{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--blue);padding:10px 0 12px;box-shadow:0 6px 12px rgba(10,20,51,.18)}
 .roster .row{display:flex;gap:8px;overflow-x:auto;padding:0 18px;scrollbar-width:none;max-width:720px;margin:0 auto}
 .roster .row::-webkit-scrollbar{display:none}
+@media (min-width:700px){.roster .row{flex-wrap:wrap;overflow:visible;justify-content:center;padding:0 24px}}
 .chip{flex:0 0 auto;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;border-radius:999px;padding:5px 12px 5px 6px;font-size:14px;font-weight:500;white-space:nowrap}
 .chip:hover{background:rgba(255,255,255,.22)}
 .av{width:28px;height:28px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:0 0 auto}
@@ -60,6 +61,7 @@ h2{font-size:24px;color:var(--blue);margin-bottom:6px}
 :root[data-theme="dark"] h2{color:#9DB8FF}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) h2{color:#9DB8FF}}
 .lead{color:var(--muted);margin:0 0 18px}
+.lead.note{font-size:14px;background:var(--tint);border-radius:12px;padding:10px 14px;margin-top:-6px}
 ol.steps{margin:0;padding:0;list-style:none;counter-reset:s}
 ol.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
 ol.steps li::before{content:counter(s);flex:0 0 28px;height:28px;border-radius:50%;background:var(--lime);color:#0E2A7A;font-weight:700;display:grid;place-items:center;font-size:14px;margin-top:1px}
@@ -67,6 +69,7 @@ ol.steps li::before{content:counter(s);flex:0 0 28px;height:28px;border-radius:5
 /* business card */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
 .field{display:block;margin-bottom:12px}
+@media (min-width:700px){.cardgrid{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}}
 .field span{display:block;font-size:14px;font-weight:600;color:var(--blue-ink);margin-bottom:4px}
 .field input{width:100%;font:inherit;font-size:16px;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .field input:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(26,74,212,.18)}
@@ -76,6 +79,9 @@ ol.steps li::before{content:counter(s);flex:0 0 28px;height:28px;border-radius:5
 .card .actions{margin-top:14px}
 
 /* employees */
+.emps{display:grid;gap:16px}
+@media (min-width:960px){.emps{grid-template-columns:1fr 1fr;align-items:start}}
+.emps .emp{margin-bottom:0}
 .emp{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
 .emp header{display:flex;gap:14px;align-items:center;margin-bottom:12px}
 .emp h3{font-size:20px}
@@ -143,17 +149,17 @@ footer{padding:36px 0 44px;color:var(--muted);font-size:14px;text-align:center}
   <div class="wrap">
     <p class="who">ورشة «الذكاء الاصطناعي لزيادة إنتاجية العمل الحر» • عيسى العبدلي</p>
     <h1>فريقي بالذكاء الاصطناعي</h1>
-    <p class="sub">كل Prompt هنا موظف جاهز. املأ بطاقة نشاطك مرة واحدة، وستُدرج تلقائيًا في كل موظف عند النسخ.</p>
+    <p class="sub">كل Prompt هنا موظف جاهز. املأ بطاقة نشاطك مرة واحدة، وستُدرج تلقائيًا في كل موظف عند النسخ. تعمل على الجوال والآيباد واللابتوب.</p>
     <div class="boss"><i></i>أنت: المدير</div>
   </div>
 </header>
-<nav class="roster" aria-label="الموظفون"><div class="row"><a class="chip" href="#card"><span class="av"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 11h4M7 15h7"/></svg></span><span>بطاقة نشاطي</span></a><a class="chip" href="#sales"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l4-4 4 3 3-3 7 5-4 5-3-2-2 2-4-3z"/></svg></span><span>موظف المبيعات</span></a><a class="chip" href="#marketing"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l6 4V6L7 10H4zM16 9a4 4 0 010 6"/></svg></span><span>موظف التسويق</span></a><a class="chip" href="#cs"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13v-2a7 7 0 0114 0v2M5 13h3v5H5zM16 13h3v5h-3z"/></svg></span><span>موظف خدمة العملاء</span></a><a class="chip" href="#finance"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v10M9.5 9.5h4a1.8 1.8 0 010 3.5h-3a1.8 1.8 0 000 3.5h4"/></svg></span><span>الموظف المالي</span></a><a class="chip" href="#ops"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg></span><span>موظف العمليات</span></a><a class="chip" href="#prod"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="7"/><path d="M12 9v4l2.5 2M10 3h4"/></svg></span><span>موظف الإنتاجية</span></a><a class="chip" href="#bizdev"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19l6-6 4 4 6-8M15 9h5v5"/></svg></span><span>موظف تطوير الأعمال</span></a><a class="chip" href="#craft"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4l6 6-9 9H5v-6zM12 6l6 6"/></svg></span><span>مساعد الحرفة</span></a><a class="chip" href="#quick"><span>Prompts سريعة</span></a><a class="chip" href="#whatsapp"><span>واتساب وإنستغرام</span></a><a class="chip" href="#team"><span>فريقي</span></a></div></nav>
+<nav class="roster" aria-label="الموظفون"><div class="row"><a class="chip" href="#card"><span class="av"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 11h4M7 15h7"/></svg></span><span>بطاقة نشاطي</span></a><a class="chip" href="#sales"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l4-4 4 3 3-3 7 5-4 5-3-2-2 2-4-3z"/></svg></span><span>موظف المبيعات</span></a><a class="chip" href="#marketing"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l6 4V6L7 10H4zM16 9a4 4 0 010 6"/></svg></span><span>موظف التسويق</span></a><a class="chip" href="#cs"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13v-2a7 7 0 0114 0v2M5 13h3v5H5zM16 13h3v5h-3z"/></svg></span><span>موظف خدمة العملاء</span></a><a class="chip" href="#finance"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v10M9.5 9.5h4a1.8 1.8 0 010 3.5h-3a1.8 1.8 0 000 3.5h4"/></svg></span><span>الموظف المالي</span></a><a class="chip" href="#ops"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg></span><span>موظف العمليات</span></a><a class="chip" href="#prod"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="7"/><path d="M12 9v4l2.5 2M10 3h4"/></svg></span><span>موظف الإنتاجية</span></a><a class="chip" href="#bizdev"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19l6-6 4 4 6-8M15 9h5v5"/></svg></span><span>موظف تطوير الأعمال</span></a><a class="chip" href="#craft"><span class="av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4l6 6-9 9H5v-6zM12 6l6 6"/></svg></span><span>مساعد الحرفة</span></a><a class="chip" href="#quick"><span>Prompts سريعة</span></a></div></nav>
 
 <main class="wrap">
   <section class="block">
     <h2>كيف تستخدم هذه الصفحة؟</h2>
     <ol class="steps">
-      <li>املأ «بطاقة نشاطي» في الأسفل مرة واحدة، وتُحفظ على جوالك.</li>
+      <li>املأ «بطاقة نشاطي» في الأسفل مرة واحدة، وتُحفظ تلقائيًا على جهازك.</li>
       <li>افتح محادثة جديدة لكل موظف في ChatGPT أو Claude، وسمّها باسمه.</li>
       <li>اضغط «انسخ الـPrompt»، والصقه في المحادثة، وعدّل ما بين [ ].</li>
       <li>ارجع لنفس المحادثة كلما احتجت هذا الموظف، وراجع الأرقام والمعلومات دائمًا.</li>
@@ -162,9 +168,9 @@ footer{padding:36px 0 44px;color:var(--muted);font-size:14px;text-align:center}
 
   <section class="block" id="card">
     <h2>بطاقة نشاطي</h2>
-    <p class="lead">ما تكتبه هنا يبقى على جوالك فقط، ويُدرج في كل موظف مكان «الصق بطاقة نشاطي هنا».</p>
+    <p class="lead">ما تكتبه هنا يُحفظ تلقائيًا في هذا المتصفح على جهازك فقط، ويُدرج في كل موظف مكان «الصق بطاقة نشاطي هنا».</p>
     <div class="card">
-      
+      <div class="cardgrid">
 <label class="field"><span>اسم النشاط</span><input data-card="name" placeholder="مثال: شموع نور" autocomplete="off"></label>
 <label class="field"><span>نوع النشاط</span><input data-card="type" placeholder="مثال: صناعة شموع يدوية" autocomplete="off"></label>
 <label class="field"><span>الخدمات أو المنتجات</span><input data-card="offer" placeholder="ماذا تبيع؟" autocomplete="off"></label>
@@ -172,7 +178,7 @@ footer{padding:36px 0 44px;color:var(--muted);font-size:14px;text-align:center}
 <label class="field"><span>الأسعار (إن وجدت)</span><input data-card="prices" placeholder="مثال: من 3 إلى 8 ر.ع" autocomplete="off"></label>
 <label class="field"><span>أسلوب التواصل</span><input data-card="tone" placeholder="ودّي / رسمي / مرح / فاخر" autocomplete="off"></label>
 <label class="field"><span>السوق المستهدف</span><input data-card="market" placeholder="المدينة / الدولة / أونلاين" autocomplete="off"></label>
-<label class="field"><span>ما يميزني عن غيري</span><input data-card="edge" placeholder="لماذا يختارك العميل؟" autocomplete="off"></label>
+<label class="field"><span>ما يميزني عن غيري</span><input data-card="edge" placeholder="لماذا يختارك العميل؟" autocomplete="off"></label></div>
       <div class="status" id="status"><b></b><span>لم تُملأ البطاقة بعد</span></div>
       <div class="actions"><button class="copy" data-copy="card">انسخ البطاقة</button><button class="more" id="clearCard">امسح البطاقة</button></div>
     </div>
@@ -181,7 +187,7 @@ footer{padding:36px 0 44px;color:var(--muted);font-size:14px;text-align:center}
   <section class="block">
     <h2>فريقك: 7 موظفين + مساعد الحرفة</h2>
     <p class="lead">اختر الموظف، وانسخ الـPrompt، وابدأ محادثة جديدة باسمه.</p>
-    
+    <div class="emps">
 <section class="emp" id="sales">
   <header>
     <span class="av big"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l4-4 4 3 3-3 7 5-4 5-3-2-2 2-4-3z"/></svg></span>
@@ -269,13 +275,14 @@ footer{padding:36px 0 44px;color:var(--muted);font-size:14px;text-align:center}
     <button class="copy" data-copy="craft">انسخ الـPrompt</button>
     <button class="more" data-more>اعرض كاملًا</button>
   </div>
-</section>
+</section></div>
   </section>
 
   <section class="block" id="quick">
     <h2>Prompts سريعة لكل يوم</h2>
-    <p class="lead">جُمل قصيرة تضيفها داخل أي محادثة مع أي موظف.</p>
+    <p class="lead">جُمل قصيرة تضيفها داخل أي محادثة مع أي موظف، وPrompt لردود واتساب وإنستغرام الجاهزة.</p>
     <div class="quicks">
+<div class="quick"><h4>10 ردود جاهزة لواتساب وإنستغرام</h4><p>يكتب لك ردودًا لأكثر الأسئلة تكرارًا، مع رسالة ترحيب ورسالة غياب، لتحفظها كردود سريعة في التطبيق.</p><button class="copy small" data-copy="faq">انسخ</button></div>
 <div class="quick"><h4>تسليم بين موظفين</h4><p>هذا ما أنجزه [اسم الموظف]: [الصق النتيجة]. بناءً عليه، نفّذ دورك وجهّز [المطلوب].</p><button class="copy small" data-copy="q0">انسخ</button></div>
 <div class="quick"><h4>قبل أن تبدأ</h4><p>قبل أن تجيب، اسألني 5 أسئلة تساعدك على فهم طلبي بشكل أدق.</p><button class="copy small" data-copy="q1">انسخ</button></div>
 <div class="quick"><h4>خيارات لا جواب واحد</h4><p>أعطني 3 نسخ مختلفة: رسمية، ودّية، مختصرة.</p><button class="copy small" data-copy="q2">انسخ</button></div>
@@ -284,35 +291,6 @@ footer{padding:36px 0 44px;color:var(--muted);font-size:14px;text-align:center}
 <div class="quick"><h4>ملخص سريع</h4><p>لخّص هذه الرسائل في نقاط: ماذا يريد العميل؟ ما المطلوب مني؟ ما الموعد؟</p><button class="copy small" data-copy="q5">انسخ</button></div></div>
   </section>
 
-  <section class="block" id="whatsapp">
-    <h2>واتساب وإنستغرام: ابدأ اليوم</h2>
-    <p class="lead">بدون برمجة ولا اشتراكات: الـAI يكتب الردود، والتطبيق يرسلها.</p>
-    <div class="two">
-      <div class="quick"><h4>WhatsApp Business</h4><ul><li>الردود السريعة (Quick Replies)</li><li>رسالة ترحيب ورسالة غياب</li><li>كتالوج المنتجات والأسعار</li><li>تصنيف العملاء بالوسوم (Labels)</li></ul></div>
-      <div class="quick"><h4>إنستغرام (حساب أعمال)</h4><ul><li>الردود المحفوظة في الرسائل</li><li>الأسئلة الشائعة التلقائية (FAQ)</li><li>رد تلقائي على التعليقات والقصص</li><li>أزرار التواصل في الملف الشخصي</li></ul></div>
-    </div>
-    <section class="emp" style="margin-top:14px">
-      <header><span class="av big"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13v-2a7 7 0 0114 0v2M5 13h3v5H5zM16 13h3v5h-3z"/></svg></span><div><h3>10 ردود جاهزة للحفظ</h3><p>انسخه إلى موظف خدمة العملاء، ثم احفظ الردود في التطبيق</p></div></header>
-      <div class="prompt" data-prompt="faq"><span class="p">أنت «موظف خدمة العملاء» في نشاطي.</span><span class="h">معلومات نشاطي</span><span class="ph" data-ph>[الصق «بطاقة نشاطي» هنا]</span><span class="h">المهمة</span><span class="li">اكتب أكثر 10 أسئلة يسألها عملائي، ولكل سؤال ردًا جاهزًا قصيرًا يناسب واتساب</span><span class="li">اكتب رسالة ترحيب ورسالة غياب (خارج أوقات العمل)</span><span class="li">اجعل لكل رد اسمًا مختصرًا لأحفظه كرد سريع في التطبيق</span><span class="h">شكل المخرجات</span><span class="p">جدول: اسم الرد المختصر | نص الرد</span></div>
-      <div class="actions"><button class="copy" data-copy="faq">انسخ الـPrompt</button><button class="more" data-more>اعرض كاملًا</button></div>
-    </section>
-    <div class="rule">القاعدة الذهبية: الأسعار والالتزامات لا تُرسل تلقائيًا. الـAI يكتب المسودة… وأنت تضغط إرسال.</div>
-  </section>
-
-  <section class="block" id="team">
-    <h2>فريقي بالذكاء الاصطناعي</h2>
-    <p class="lead">لوحتك الخاصة، تُحفظ على جوالك.</p>
-    <div class="card ws">
-      <h4>فريقي</h4>
-      <label class="check"><input type="checkbox" data-ws="t_sales"><span>موظف المبيعات</span></label><label class="check"><input type="checkbox" data-ws="t_marketing"><span>موظف التسويق</span></label><label class="check"><input type="checkbox" data-ws="t_cs"><span>موظف خدمة العملاء</span></label><label class="check"><input type="checkbox" data-ws="t_finance"><span>الموظف المالي</span></label><label class="check"><input type="checkbox" data-ws="t_ops"><span>موظف العمليات وإدارة المشاريع</span></label><label class="check"><input type="checkbox" data-ws="t_prod"><span>موظف الإنتاجية وتنظيم الوقت</span></label><label class="check"><input type="checkbox" data-ws="t_bizdev"><span>موظف تطوير الأعمال</span></label><label class="check"><input type="checkbox" data-ws="t_craft"><span>مساعد الحرفة</span></label>
-      <h4>أكثر 3 مهام سأعطيها للـAI من الآن</h4>
-      <label class="field"><span>المهمة 1</span><input data-ws="task1" autocomplete="off"></label><label class="field"><span>المهمة 2</span><input data-ws="task2" autocomplete="off"></label><label class="field"><span>المهمة 3</span><input data-ws="task3" autocomplete="off"></label>
-      <h4>الـWorkflow الخاص ببزنسي</h4>
-      <label class="field"><span>من الطلب إلى التسليم</span><input data-ws="flow" placeholder="مثال: طلب ← المبيعات ← المالي ← العمليات ← الحرفة ← خدمة العملاء ← التسويق" autocomplete="off"></label>
-      <h4>خطة أول 7 أيام</h4>
-      <label class="check"><input type="checkbox" data-ws="d0"><span>اليوم 1: جهّز بطاقة نشاطك</span></label><label class="check"><input type="checkbox" data-ws="d1"><span>اليوم 2: 10 ردود للأسئلة المتكررة</span></label><label class="check"><input type="checkbox" data-ws="d2"><span>اليوم 3: خطة محتوى لأسبوع</span></label><label class="check"><input type="checkbox" data-ws="d3"><span>اليوم 4: عرض سعر واحد بالموظف المالي</span></label><label class="check"><input type="checkbox" data-ws="d4"><span>اليوم 5: خطة أسبوعك مع موظف الإنتاجية</span></label><label class="check"><input type="checkbox" data-ws="d5"><span>اليوم 6: حلّل منافسًا واحدًا</span></label><label class="check"><input type="checkbox" data-ws="d6"><span>اليوم 7: كم ساعة وفّرت هذا الأسبوع؟</span></label>
-    </div>
-  </section>
 </main>
 <footer class="wrap">راجع دائمًا الأرقام والمعلومات قبل استخدامها، ولا تشارك بيانات حساسة. أنت المدير… والـAI يقترح.</footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -344,7 +322,7 @@ function refreshCard(){
   const st = document.getElementById("status");
   const on = filled();
   st.classList.toggle("on", on);
-  st.querySelector("span").textContent = on ? "بطاقتك محفوظة على هذا الجوال، وستُدرج تلقائيًا عند النسخ" : "لم تُملأ البطاقة بعد";
+  st.querySelector("span").textContent = on ? "بطاقتك محفوظة على هذا الجهاز، وستُدرج تلقائيًا عند النسخ" : "لم تُملأ البطاقة بعد";
   document.querySelectorAll("[data-ph]").forEach(el => {
     const ct = cardText();
     el.textContent = ct || PH;
@@ -389,16 +367,8 @@ document.querySelectorAll("[data-more]").forEach(btn => {
     btn.textContent = open ? "اطوِ النص" : "اعرض كاملًا";
   });
 });
-const ws = store.get("ws") || {};
-document.querySelectorAll("[data-ws]").forEach(el => {
-  const k = el.dataset.ws;
-  if (el.type === "checkbox") { el.checked = !!ws[k]; el.closest(".check").classList.toggle("done", el.checked && k.startsWith("d")); }
-  else el.value = ws[k] || "";
-  el.addEventListener(el.type === "checkbox" ? "change" : "input", () => {
-    ws[k] = el.type === "checkbox" ? el.checked : el.value; store.set("ws", ws);
-    if (el.type === "checkbox") el.closest(".check").classList.toggle("done", el.checked && k.startsWith("d"));
-  });
-});
+function setNavH(){ const r = document.querySelector(".roster"); document.documentElement.style.setProperty("--nav-h", r.offsetHeight + "px"); }
+addEventListener("resize", setNavH); setNavH();
 refreshCard();
 </script>
 </body>
