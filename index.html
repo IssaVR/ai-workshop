@@ -134,7 +134,19 @@ footer{padding:36px 0 44px;color:var(--muted);font-size:14px;text-align:center}
 .toast{position:fixed;inset-inline:0;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);margin:auto;width:max-content;max-width:90vw;background:#0E2A7A;color:#fff;border-radius:999px;padding:10px 20px;font-weight:600;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none;z-index:9}
 .toast.show{opacity:1;transform:none}
 
+.pdfrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.pdfbtn{flex:0 0 auto;font-weight:600}
+.hint{margin:0;flex:1 1 260px;font-size:14px;color:var(--muted);line-height:1.6}
+.print-only{display:none}
 @media print{
+  :root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--bg:#fff!important;--surface:#fff!important;--tint:#F2F5FF!important;--line:#C9D3EE!important;--text:#111!important;--muted:#444!important;--fill:#1D4ED8!important;--ph-bg:#FFF6CC!important;--ph-text:#6B5300!important;--blue-ink:#0E2A7A!important}
+  .pdfrow,#card .card,#card .lead{display:none!important}
+  .print-only{display:block;white-space:pre-line;background:#F2F5FF;border-radius:12px;padding:12px 16px;font-size:14px}
+  .emps{display:block!important}.emps .emp{margin-bottom:14px!important}
+  .quick .copy{display:none}
+  h2,.prompt .h,.quick h4,.emp h3{color:#1A4AD4!important}
+  @page{margin:14mm}
+
   .roster,.actions,.toast,.card .actions,.status{display:none!important}
   body{background:#fff;color:#000}
   .prompt{max-height:none!important;background:#F2F5FF}
@@ -164,11 +176,16 @@ footer{padding:36px 0 44px;color:var(--muted);font-size:14px;text-align:center}
       <li>اضغط «انسخ الـPrompt»، والصقه في المحادثة، وعدّل ما بين [ ].</li>
       <li>ارجع لنفس المحادثة كلما احتجت هذا الموظف، وراجع الأرقام والمعلومات دائمًا.</li>
     </ol>
+    <div class="pdfrow">
+      <button class="more pdfbtn" id="pdfBtn">حمّل كـPDF</button>
+      <p class="hint">املأ بطاقتك أولًا ليخرج الملف ببيانات نشاطك. في نافذة الطباعة اختر «حفظ كـPDF»، وعلى الآيفون والآيباد اضغط زر المشاركة ثم «حفظ في الملفات». للنسخ استخدم هذه الصفحة، لا الـPDF.</p>
+    </div>
   </section>
 
   <section class="block" id="card">
     <h2>بطاقة نشاطي</h2>
     <p class="lead">ما تكتبه هنا يُحفظ تلقائيًا في هذا المتصفح على جهازك فقط، ويُدرج في كل موظف مكان «الصق بطاقة نشاطي هنا».</p>
+    <div class="print-only" id="cardPrint"></div>
     <div class="card">
       <div class="cardgrid">
 <label class="field"><span>اسم النشاط</span><input data-card="name" placeholder="مثال: شموع نور" autocomplete="off"></label>
@@ -366,6 +383,15 @@ document.querySelectorAll("[data-more]").forEach(btn => {
     const open = p.classList.toggle("open");
     btn.textContent = open ? "اطوِ النص" : "اعرض كاملًا";
   });
+});
+document.getElementById("pdfBtn").addEventListener("click", () => {
+  const cp = document.getElementById("cardPrint");
+  cp.textContent = cardText() || CARD_LINES.slice(1).join("\n").replace(/^/, "بطاقة نشاطي:\n");
+  const closed = [...document.querySelectorAll(".prompt:not(.open)")];
+  closed.forEach(p => p.classList.add("open"));
+  const restore = () => { closed.forEach(p => p.classList.remove("open")); removeEventListener("afterprint", restore); };
+  addEventListener("afterprint", restore);
+  setTimeout(() => window.print(), 50);
 });
 function setNavH(){ const r = document.querySelector(".roster"); document.documentElement.style.setProperty("--nav-h", r.offsetHeight + "px"); }
 addEventListener("resize", setNavH); setNavH();
